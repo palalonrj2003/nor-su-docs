@@ -1,0 +1,36 @@
+CREATE TYPE public.app_role AS ENUM ('student', 'admin', 'staff');
+CREATE TABLE public.profiles (
+ id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+ full_name text NOT NULL DEFAULT '' CHECK (char_length(full_name) <= 150),
+ contact_number text NOT NULL DEFAULT '' CHECK (char_length(contact_number) <= 30),
+ created_at timestamptz NOT NULL DEFAULT now()
+);
+GRANT SELECT, UPDATE ON public.profiles TO authenticated;
+GRANT ALL ON public.profiles TO service_role;
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+CREATE TABLE public.user_roles (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+ role public.app_role NOT NULL DEFAULT 'student',
+ UNIQUE(user_id, role)
+);
+GRANT SELECT ON public.user_roles TO authenticated;
+GRANT ALL ON public.user_roles TO service_role;
+ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
+CREATE FUNCTION public.has_role(_user_id uuid, _role public.app_role) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
+ SELECT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id = _user_id AND role = _role)
+$$;
+REVOKE ALL ON FUNCTION public.has_role(uuid, public.app_role) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.has_role(uuid, public.app_role) TO authenticated, service_role;
+CREATE POLICY "Read own profile or admin" ON public.profiles FOR SELECT TO authenticated USING (id = auth.uid() OR public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Update own profile" ON public.profiles FOR UPDATE TO authenticated USING (id = auth.uid()) WITH CHECK (id = auth.uid());
+CREATE POLICY "Read own roles or admin" ON public.user_roles FOR SELECT TO authenticated USING (user_id = auth.uid() OR public.has_role(auth.uid(), 'admin'));
+CREATE FUNCTION public.handle_new_user() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+ INSERT INTO public.profiles(id, full_name, contact_number) VALUES (NEW.id, left(coalesce(NEW.raw_user_meta_data->>'full_name',''),150), left(coalesce(NEW.raw_user_meta_data->>'contact_number',''),30));
+ INSERT INTO public.user_roles(user_id, role) VALUES (NEW.id, 'student');
+ RETURN NEW;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;
+CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
