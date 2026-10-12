@@ -1,0 +1,6 @@
+import { FileText, BedDouble, Users, ShieldCheck, Settings, UserRoundCog, LayoutDashboard } from 'lucide-react'
+const icons = { dashboard: LayoutDashboard, applications: FileText, consent: ShieldCheck, rooms: BedDouble, residents: Users, staff: UserRoundCog, settings: Settings, student: FileText }
+export function EmptyPage({ title, subtitle, kind }: { title: string; subtitle: string; kind: keyof typeof icons }) {
+  const Icon = icons[kind]
+  return <><div className="mb-7"><p className="mb-2 text-xs font-medium text-muted-foreground">BALAY NORSU / DORMITORY</p><h1 className="text-3xl font-semibold">{title}</h1><p className="mt-2 text-sm text-muted-foreground">{subtitle}</p></div><div className="flex min-h-[380px] flex-col items-center justify-center border-y border-border py-16 text-center"><span className="mb-5 rounded-full bg-accent p-5 text-primary"><Icon className="h-8 w-8" /></span><h2 className="text-lg font-semibold">{kind === 'student' ? 'No application yet' : `No ${kind === 'dashboard' ? 'dormitory activity' : kind === 'consent' ? 'consent forms' : kind} yet`}</h2><p className="mt-2 text-sm text-muted-foreground">{kind === 'student' ? 'Your application and status will appear here.' : 'There are no records to display.'}</p></div></>
+}
