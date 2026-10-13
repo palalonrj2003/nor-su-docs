@@ -15,6 +15,13 @@
       "when": 1791771720753,
       "tag": "0001_restrict_role_checker_to_authenticated",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791850669584,
+      "tag": "0002_application_form",
+      "breakpoints": true
     }
   ]
 }
