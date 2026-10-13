@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedApplyRouteImport } from './routes/_authenticated/apply'
 import { Route as AuthenticatedMyApplicationRouteImport } from './routes/_authenticated/my-application'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminApplicationsRouteImport } from './routes/_authenticated/admin/applications'
@@ -51,6 +52,11 @@ const TermsRoute = TermsRouteImport.update({
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedApplyRoute = AuthenticatedApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMyApplicationRoute =
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/apply': typeof AuthenticatedApplyRoute
   '/my-application': typeof AuthenticatedMyApplicationRoute
   '/admin/applications': typeof AuthenticatedAdminApplicationsRoute
   '/admin/consent-review': typeof AuthenticatedAdminConsentReviewRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/apply': typeof AuthenticatedApplyRoute
   '/my-application': typeof AuthenticatedMyApplicationRoute
   '/admin/applications': typeof AuthenticatedAdminApplicationsRoute
   '/admin/consent-review': typeof AuthenticatedAdminConsentReviewRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/apply': typeof AuthenticatedApplyRoute
   '/_authenticated/my-application': typeof AuthenticatedMyApplicationRoute
   '/_authenticated/admin/applications': typeof AuthenticatedAdminApplicationsRoute
   '/_authenticated/admin/consent-review': typeof AuthenticatedAdminConsentReviewRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/admin'
+    | '/apply'
     | '/my-application'
     | '/admin/applications'
     | '/admin/consent-review'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/privacy'
     | '/terms'
+    | '/apply'
     | '/my-application'
     | '/admin/applications'
     | '/admin/consent-review'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/_authenticated/admin'
+    | '/_authenticated/apply'
     | '/_authenticated/my-application'
     | '/_authenticated/admin/applications'
     | '/_authenticated/admin/consent-review'
@@ -243,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/apply': {
+      id: '/_authenticated/apply'
+      path: '/apply'
+      fullPath: '/apply'
+      preLoaderRoute: typeof AuthenticatedApplyRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/my-application': {
@@ -332,11 +351,13 @@ const AuthenticatedAdminRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedApplyRoute: typeof AuthenticatedApplyRoute
   AuthenticatedMyApplicationRoute: typeof AuthenticatedMyApplicationRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedApplyRoute: AuthenticatedApplyRoute,
   AuthenticatedMyApplicationRoute: AuthenticatedMyApplicationRoute,
 }
 
