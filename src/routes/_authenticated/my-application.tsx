@@ -103,7 +103,7 @@ function ApplicationView({ app, docs }: { app: App; docs: { type: string; file_n
   </div>
 }
 
-function ConsentCard({ app, consentDoc }: { app: App; consentDoc?: { file_name: string; uploaded_at: string } }) {
+function ConsentCard({ app, consentDoc }: { app: App; consentDoc: { file_name: string; uploaded_at: string } | undefined }) {
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
