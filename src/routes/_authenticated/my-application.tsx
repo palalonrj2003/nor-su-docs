@@ -3,7 +3,6 @@ import { createFileRoute, Link, redirect, useNavigate } from '@tanstack/react-ro
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { CheckCircle2, Circle, FileText, LoaderCircle, LogOut, Upload } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client'
-import { DormShell } from '@/components/dorm-shell'
 import { EmptyPage } from '@/components/empty-page'
 import { Brand } from '@/components/brand'
 import { Button } from '@/components/ui/button'
