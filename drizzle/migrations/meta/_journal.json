@@ -29,6 +29,13 @@
       "when": 1791958093334,
       "tag": "0003_enforce_verified_consent_for_approval",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791958122071,
+      "tag": "0004_allow_student_consent_received",
+      "breakpoints": true
     }
   ]
 }
