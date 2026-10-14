@@ -137,6 +137,15 @@ Authenticated (`src/routes/_authenticated/`, `ssr: false`, gated by
 
 ## 9. Changelog (newest first)
 
+- 2026-10-14 — Prompt 3: student status page and notarized parental consent.
+  Rebuilt `/my-application` with application and consent status badges, two
+  step trackers, admin remarks, consent rejection reason, document list, and
+  a consent upload card (PDF/JPG/PNG, 5 MB) that sets `consent_status` to
+  `received`. Database: new trigger `enforce_verified_consent_for_approval`
+  blocks approving an application unless consent is verified;
+  `protect_application_fields` now lets students move consent
+  pending/rejected → received only. Parent/student notification emails are
+  deferred until an email provider key is added.
 - 2026-10-14 — Prompt 2: student application flow. Added `applications`,
   `application_periods`, `application_documents` tables with RLS, private
   `application-documents` storage bucket, 7-step `/apply` form with privacy
@@ -160,8 +169,10 @@ Authenticated (`src/routes/_authenticated/`, `ssr: false`, gated by
 
 ## 11. Next / possible changes
 
-- Prompts 3–7 from `PROJECT_SPEC.md` (admin review, consent review,
+- Prompts 4–7 from `PROJECT_SPEC.md` (admin review, consent review,
   rooms/beds, residents, staff management) — awaiting the next prompt.
+- Email notifications (consent form to guardian, status-change emails to the
+  student) once an email provider key (e.g. Resend) is added as a secret.
 - Retry/add-documents UI on `/my-application`.
 - Verify password sign-in with a confirmed account.
 
