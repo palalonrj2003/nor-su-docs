@@ -16,9 +16,9 @@ export const Route = createFileRoute('/_authenticated/my-application')({
 })
 
 const statusStyles: Record<string, string> = {
-  submitted: 'bg-info-soft text-primary', under_review: 'bg-info-soft text-primary',
+  submitted: 'bg-azure-soft text-primary', under_review: 'bg-azure-soft text-primary',
   approved: 'bg-success-soft text-success', verified: 'bg-success-soft text-success',
-  waitlisted: 'bg-warning-soft text-warning', pending: 'bg-warning-soft text-warning', received: 'bg-info-soft text-primary',
+  waitlisted: 'bg-warning-soft text-warning', pending: 'bg-warning-soft text-warning', received: 'bg-azure-soft text-primary',
   rejected: 'bg-danger-soft text-destructive',
 }
 const statusLabels: Record<string, string> = { submitted: 'Submitted', under_review: 'Under Review', approved: 'Approved', waitlisted: 'Waitlisted', rejected: 'Rejected', pending: 'Pending', received: 'Received', verified: 'Verified' }
@@ -87,7 +87,7 @@ function ApplicationView({ app, docs }: { app: App; docs: { type: string; file_n
         <div><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Application</p><Tracker steps={['Submitted', 'Under review', app.status === 'rejected' ? 'Rejected' : app.status === 'waitlisted' ? 'Waitlisted' : 'Approved']} current={statusIndex} done={app.status === 'approved'} /></div>
         <div><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Parental consent</p><Tracker steps={['Pending', 'Received', 'Verified']} current={consentIndex} done={app.consent_status === 'verified'} /></div>
       </div>
-      {app.admin_remarks && <div className="mt-6 rounded-lg bg-info-soft p-4 text-sm"><p className="font-semibold">Remarks from the dormitory office</p><p className="mt-1">{app.admin_remarks}</p></div>}
+      {app.admin_remarks && <div className="mt-6 rounded-lg bg-azure-soft p-4 text-sm"><p className="font-semibold">Remarks from the dormitory office</p><p className="mt-1">{app.admin_remarks}</p></div>}
       {app.consent_status === 'rejected' && app.consent_rejection_reason && <div className="mt-4 rounded-lg bg-danger-soft p-4 text-sm text-destructive"><p className="font-semibold">Consent form rejected</p><p className="mt-1">{app.consent_rejection_reason}</p><p className="mt-1">Please upload a new notarized copy below.</p></div>}
     </div>
 
@@ -137,7 +137,7 @@ function ConsentCard({ app, consentDoc }: { app: App; consentDoc?: { file_name: 
     <p className="mt-2 text-sm text-muted-foreground">A consent form was sent to your parent or guardian's email ({app.guardian_email}). It must be printed, signed, notarized by an attorney, and then uploaded here as a scan or clear photo.</p>
     {consentDoc && <p className="mt-3 flex items-center gap-2 text-sm"><FileText className="h-4 w-4 text-primary" /><span className="font-medium">{consentDoc.file_name}</span><span className="text-xs text-muted-foreground">uploaded {new Date(consentDoc.uploaded_at).toLocaleDateString()}</span></p>}
     {app.consent_status === 'verified' && <p className="mt-4 flex items-center gap-2 rounded-lg bg-success-soft p-3 text-sm font-medium text-success"><CheckCircle2 className="h-4 w-4" />Your consent form has been verified.</p>}
-    {app.consent_status === 'received' && <p className="mt-4 rounded-lg bg-info-soft p-3 text-sm text-primary">Your consent form was received and is waiting for the dormitory office to verify it.</p>}
+    {app.consent_status === 'received' && <p className="mt-4 rounded-lg bg-azure-soft p-3 text-sm text-primary">Your consent form was received and is waiting for the dormitory office to verify it.</p>}
     {canUpload && <div className="mt-4">
       <label className="block rounded-xl border border-dashed border-input bg-card p-5 text-sm font-medium">
         <span className="flex items-center gap-2"><Upload className="h-4 w-4 text-primary" />Upload notarized consent form</span>
