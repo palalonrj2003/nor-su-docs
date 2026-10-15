@@ -70,8 +70,8 @@ export function applicationsOverTime(rows: Pick<ApplicationRow, 'submitted_at' |
   }
   const idx = new Map(out.map((o, i) => [o.date, i]))
   for (const r of rows) {
-    const s = idx.get(r.submitted_at.slice(0, 10)); if (s !== undefined) out[s].submitted++
-    if (r.status === 'approved' && r.reviewed_at) { const a = idx.get(r.reviewed_at.slice(0, 10)); if (a !== undefined) out[a].approved++ }
+    const s = idx.get(r.submitted_at.slice(0, 10)); if (s !== undefined) out[s]!.submitted++
+    if (r.status === 'approved' && r.reviewed_at) { const a = idx.get(r.reviewed_at.slice(0, 10)); if (a !== undefined) out[a]!.approved++ }
   }
   return out
 }

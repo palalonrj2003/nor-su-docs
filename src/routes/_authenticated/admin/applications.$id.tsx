@@ -48,9 +48,9 @@ function ReviewPage() {
   async function update(patch: Partial<ApplicationRow>, action: string, meta: Record<string, unknown>, ok: string) {
     setBusy(true)
     const { data: { user } } = await supabase.auth.getUser()
-    const { error } = await supabase.from('applications').update({ ...patch, reviewed_by: user?.id, reviewed_at: new Date().toISOString() }).eq('id', app.id)
+    const { error } = await supabase.from('applications').update({ ...patch, reviewed_by: user?.id ?? null, reviewed_at: new Date().toISOString() }).eq('id', app.id)
     setBusy(false)
-    if (error) return toast.error(error.message.includes('verified') ? 'Consent must be verified before approval.' : 'The change could not be saved. Please try again.')
+    if (error) { toast.error(error.message.includes('verified') ? 'Consent must be verified before approval.' : 'The change could not be saved. Please try again.'); return }
     await logAudit(action, 'application', app.id, meta)
     toast.success(ok)
     await qc.invalidateQueries({ queryKey: ['admin-application', id] }); void qc.invalidateQueries({ queryKey: ['admin-applications'] })
@@ -58,7 +58,7 @@ function ReviewPage() {
 
   async function view(doc: (typeof docs)[number]) {
     const { data: signed, error } = await supabase.storage.from('application-documents').createSignedUrl(doc.storage_path, 60)
-    if (error || !signed) return toast.error('This document could not be opened.')
+    if (error || !signed) { toast.error('This document could not be opened.'); return }
     await logAudit('view_document', 'application_document', doc.id, { application_id: app.id, type: doc.type })
     setPreview({ url: signed.signedUrl, name: doc.file_name })
   }
