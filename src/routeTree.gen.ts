@@ -24,6 +24,7 @@ import { Route as AuthenticatedAdminRoomsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminStaffRouteImport } from './routes/_authenticated/admin/staff'
 import { Route as AuthenticatedAdminApplicationsIndexRouteImport } from './routes/_authenticated/admin/applications.index'
+import { Route as AuthenticatedAdminApplicationsIdRouteImport } from './routes/_authenticated/admin/applications.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -104,6 +105,12 @@ const AuthenticatedAdminApplicationsIndexRoute =
     path: '/applications/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminApplicationsIdRoute =
+  AuthenticatedAdminApplicationsIdRouteImport.update({
+    id: '/applications/$id',
+    path: '/applications/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/staff': typeof AuthenticatedAdminStaffRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/applications/$id': typeof AuthenticatedAdminApplicationsIdRoute
   '/admin/applications/': typeof AuthenticatedAdminApplicationsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -134,6 +142,7 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/staff': typeof AuthenticatedAdminStaffRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/applications/$id': typeof AuthenticatedAdminApplicationsIdRoute
   '/admin/applications': typeof AuthenticatedAdminApplicationsIndexRoute
 }
 export interface FileRoutesById {
@@ -152,6 +161,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/staff': typeof AuthenticatedAdminStaffRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/applications/$id': typeof AuthenticatedAdminApplicationsIdRoute
   '/_authenticated/admin/applications/': typeof AuthenticatedAdminApplicationsIndexRoute
 }
 export interface FileRouteTypes {
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/'
+    | '/admin/applications/$id'
     | '/admin/applications/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/staff'
     | '/admin'
+    | '/admin/applications/$id'
     | '/admin/applications'
   id:
     | '__root__'
@@ -202,6 +214,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/staff'
     | '/_authenticated/admin/'
+    | '/_authenticated/admin/applications/$id'
     | '/_authenticated/admin/applications/'
   fileRoutesById: FileRoutesById
 }
@@ -320,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminApplicationsIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/applications/$id': {
+      id: '/_authenticated/admin/applications/$id'
+      path: '/applications/$id'
+      fullPath: '/admin/applications/$id'
+      preLoaderRoute: typeof AuthenticatedAdminApplicationsIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
@@ -330,6 +350,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminStaffRoute: typeof AuthenticatedAdminStaffRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminApplicationsIdRoute: typeof AuthenticatedAdminApplicationsIdRoute
   AuthenticatedAdminApplicationsIndexRoute: typeof AuthenticatedAdminApplicationsIndexRoute
 }
 
@@ -341,6 +362,8 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
     AuthenticatedAdminStaffRoute: AuthenticatedAdminStaffRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+    AuthenticatedAdminApplicationsIdRoute:
+      AuthenticatedAdminApplicationsIdRoute,
     AuthenticatedAdminApplicationsIndexRoute:
       AuthenticatedAdminApplicationsIndexRoute,
   }
